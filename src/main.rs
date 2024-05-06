@@ -1,7 +1,9 @@
 mod url;
 
+use url::Url;
+
 fn main() {
-    let url = url::URL::new("http://www.poop.com");
+    let url = Url::new("http://www.poop.com");
     println!("scheme: {}", url.get_scheme());
     println!("host: {}", url.get_host());
     println!("URL: {}", url.get_url());
