@@ -3,9 +3,11 @@ mod url;
 use url::Url;
 
 fn main() {
-    let url = Url::new("http://www.poop.com");
-    println!("scheme: {}", url.get_scheme());
-    println!("host: {}", url.get_host());
-    println!("URL: {}", url.get_url());
-    println!("path: {}", url.get_path());
+    let url_value = Url::new("https://www.poop.com");
+    let url = match &url_value {
+        Some(_url) => _url,
+        None => {
+            panic!("Failed to create URL");
+        }
+    };
 }
