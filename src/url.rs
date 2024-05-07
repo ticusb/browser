@@ -1,45 +1,45 @@
-pub struct URL {
+pub struct Url {
     scheme: String,
     host: String,
     url: String,
     path: String,
 }
 
-impl URL {
-    pub fn new(url: &str) -> URL {
+impl Url {
+    pub fn new(url: &str) -> Url {
         let parts: (&str, &str) = url.split_once("://").unwrap();
-        let scheme = parts.0.to_string();
-        let mut url = parts.1.to_string();
-        assert!(scheme == "http");
+        let s = parts.0.to_string();
+        let mut u = parts.1.to_string();
+        assert!(s == "http");
 
-        if !url.contains('/') {
-            url.push('/');
+        if !u.contains('/') {
+            u.push('/');
         }
 
-        let parts: (&str, &str) = url.split_once("/").unwrap();
-        let hostca = parts.0.to_string();
-        let path = parts.1.to_string();
-        URL {
-            scheme: scheme,
-            host: host,
-            url: url,
-            path: path,
+        let parts: (&str, &str) = url.split_once('/').unwrap();
+        let h = parts.0.to_string();
+        let p = parts.1.to_string();
+        Url {
+            scheme: s,
+            host: h,
+            url: u,
+            path: p,
         }
     }
 
     pub fn get_scheme(&self) -> &str {
-        return &self.scheme;
+        &self.scheme
     }
 
     pub fn get_host(&self) -> &str {
-        return &self.host;
+        &self.host
     }
 
     pub fn get_url(&self) -> &str {
-        return &self.url;
+        &self.url
     }
 
     pub fn get_path(&self) -> &str {
-        return &self.path;
+        &self.path
     }
 }
