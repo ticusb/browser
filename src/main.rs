@@ -10,4 +10,9 @@ fn main() {
             panic!("Failed to create URL");
         }
     };
+
+    println!("Scheme: {}", url.get_scheme());
+    println!("Host: {}", url.get_host());
+    println!("URL: {}", url.get_url());
+    println!("Path: {}", url.get_path());
 }
