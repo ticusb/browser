@@ -14,7 +14,6 @@ impl Url {
                     Some(index) => (&rest[..index], &rest[index..]),
                     None => (rest, "/"),
                 };
-
                 return Some(Url {
                     scheme: scheme.to_string(),
                     host: host.to_string(),
@@ -25,30 +24,8 @@ impl Url {
                 eprintln!("Invalid Url Scheme: {} (Expected: http)", scheme)
             }
         }
-
         None
     }
-
-    // pub fn new(url: &str) -> Url {
-    //     let parts: (&str, &str) = url.split_once("://").unwrap();
-    //     let s = parts.0.to_string();
-    //     let mut u = parts.1.to_string();
-    //     assert!(s == "http");
-
-    //     if !u.contains('/') {
-    //         u.push('/');
-    //     }
-
-    //     let parts: (&str, &str) = url.split_once('/').unwrap();
-    //     let h = parts.0.to_string();
-    //     let p = parts.1.to_string();
-    //     Url {
-    //         scheme: s,
-    //         host: h,
-    //         url: u,
-    //         path: p,
-    //     }
-    // }
 
     pub fn get_scheme(&self) -> &str {
         &self.scheme
@@ -99,11 +76,9 @@ mod tests {
     fn test_url_equality() {
         let url1 = Url::new("http://www.example.com").unwrap();
         let url2 = Url::new("http://www.example.com").unwrap();
-        let url3 = Url::new("https://www.example.com").unwrap();
+        let url3 = Url::new("http://www.notexample.com").unwrap();
 
         assert_eq!(url1, url2);
         assert_ne!(url1, url3);
     }
-
-    // Additional test cases...
 }
