@@ -36,7 +36,7 @@ impl Requestable for Data {
         Ok(self.content.clone())
     }
 
-    fn scheme(&self) -> &str {
-        &self.scheme
+    fn scheme(&self) -> String {
+        format!("{}:{}", &self.scheme, &self.data_type)
     }
 }

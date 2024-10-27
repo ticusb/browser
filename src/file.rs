@@ -35,7 +35,7 @@ impl Requestable for File {
         Ok(contents)
     }
 
-    fn scheme(&self) -> &str {
-        &self.scheme
+    fn scheme(&self) -> String {
+        String::from(&self.scheme)
     }
 }

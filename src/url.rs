@@ -107,7 +107,7 @@ impl Requestable for Url {
         }
     }
 
-    fn scheme(&self) -> &str {
-        &self.scheme
+    fn scheme(&self) -> String {
+        String::from(&self.scheme)
     }
 }
