@@ -61,7 +61,7 @@ impl ViewSource {
             protocol: protocol.to_string(),
             host: host.to_string(),
             path: path.to_string(),
-            port: port as i32,
+            port,
         })
     }
 

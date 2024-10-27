@@ -29,11 +29,9 @@ fn show(body: String) {
     let mut output = String::new();
 
     for c in body.chars() {
-        if c == '<' {
-            in_tag = true;
-        } else if c == '>' {
-            in_tag = false;
-        } else if in_tag == false {
+        if c == '<' || c == '>' {
+            in_tag = !in_tag;
+        } else if !in_tag {
             output.push(c);
         }
     }
