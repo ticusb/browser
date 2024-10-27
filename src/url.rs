@@ -1,6 +1,5 @@
 use crate::requestable::Requestable;
 use native_tls::TlsConnector;
-use std::collections::HashMap;
 use std::io::{self, BufReader, Read, Write};
 use std::net::TcpStream;
 use std::str::Split;
@@ -10,19 +9,6 @@ pub struct Url {
     host: String,
     path: String,
     port: i32,
-}
-
-fn additional_headers() -> String {
-    let mut headers = HashMap::new();
-    headers.insert("Connection".to_string(), "close".to_string());
-    headers.insert("User-Agent".to_string(), "browsa/1.0".to_string());
-
-    let mut headers_str = String::new();
-    for (key, value) in headers {
-        headers_str.push_str(&format!("{}: {}\r\n", key, value));
-    }
-
-    headers_str
 }
 
 impl Url {
@@ -55,7 +41,8 @@ impl Url {
             port
         })
     }
-
+    
+    
     fn http_request(&self) -> Result<String, io::Error> {
         let addr = format!("{}:{}", self.host, self.port);
         let mut tcp_stream = TcpStream::connect(addr)?;
@@ -64,7 +51,7 @@ impl Url {
             "GET {} HTTP/1.1\r\nHost: {}\r\n{}\r\n",
             self.path,
             self.host,
-            additional_headers()
+            self.additional_headers()
         );
         let mut response = String::new();
 
@@ -86,7 +73,7 @@ impl Url {
             "GET {} HTTP/1.1\r\nHost: {}\r\n{}\r\n",
             self.path,
             self.host,
-            additional_headers()
+            self.additional_headers()
         );
         let mut response = String::new();
 
