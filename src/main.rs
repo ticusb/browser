@@ -15,7 +15,7 @@ fn load(obj: &dyn Requestable) {
     match obj.request() {
         Ok(body) => {
             if obj.scheme() == "view-source" {
-                showSource(body);
+                show_source(body);
             } else {
                 show(body);
             }
@@ -42,7 +42,7 @@ fn show(body: String) {
     println!("{}", output);
 }
 
-fn showSource(body: String) {
+fn show_source(body: String) {
     let output = decode_entities(&body);
     println!("{}", output);
 }
@@ -77,8 +77,8 @@ fn main() {
         load(&data);
         return;
     } else if request_path.starts_with("view-source:") {
-        let viewSource = ViewSource::new(request_path).unwrap();
-        load(&viewSource);
+        let view_source = ViewSource::new(request_path).unwrap();
+        load(&view_source);
     } else {
         eprintln!("Unsupported scheme");
         std::process::exit(1);
