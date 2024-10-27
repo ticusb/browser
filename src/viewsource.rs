@@ -5,8 +5,9 @@ use std::io::{self, BufReader, Read, Write};
 use std::net::TcpStream;
 use std::str::Split;
 
-pub struct Url {
+pub struct ViewSource {
     scheme: String,
+    protocol: String,
     host: String,
     path: String,
     port: i32,
@@ -25,12 +26,19 @@ fn additional_headers() -> String {
     headers_str
 }
 
-impl Url {
-    pub fn new(url: &str) -> Result<Self, &'static str> {
-        let mut parts: Split<&str> = url.split("://");
-        let scheme = parts.next().ok_or("Invalid url")?;
+impl ViewSource {
+    pub fn new(view_source: &str) -> Result<Self, &'static str> {
+        let mut parts: Split<&str> = view_source.split(":");
+        let scheme = parts.next().ok_or("Invalid ViewSource")?;
 
-        if scheme != "http" && scheme != "https" {
+        if scheme != "view-source" {
+            return Err("Unsupported scheme");
+        }
+
+        let url = view_source.replace("view-source:", "");
+        parts = url.split("://");
+        let protocol = parts.next().ok_or("Invalid url")?;
+        if protocol != "http" && protocol != "https" {
             return Err("Unsupported scheme");
         }
 
@@ -45,11 +53,12 @@ impl Url {
         let host = host_parts.next().unwrap_or("");
         let mut port = host_parts.next().and_then(|p| p.parse().ok()).unwrap_or(-1);
         if port == -1 {
-            port = if scheme == "https" { 443 } else { 80 };
+            port = if protocol == "https" { 443 } else { 80 };
         }
 
         Ok(Self {
             scheme: scheme.to_string(),
+            protocol: protocol.to_string(),
             host: host.to_string(),
             path: path.to_string(),
             port: port as i32,
@@ -98,9 +107,9 @@ impl Url {
     }
 }
 
-impl Requestable for Url {
+impl Requestable for ViewSource {
     fn request(&self) -> Result<String, io::Error> {
-        match self.scheme.as_str() {
+        match self.protocol.as_str() {
             "http" => self.http_request(),
             "https" => self.https_request(),
             _ => panic!("Unsupported scheme"),
