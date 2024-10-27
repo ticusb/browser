@@ -47,7 +47,7 @@ fn show_source(body: String) {
     println!("{}", output);
 }
 
-fn decode_entities(body: &String) -> String {
+fn decode_entities(body: &str) -> String {
     body.replace("&lt;", "<")
         .replace("&gt;", ">")
         .replace("&amp;", "&")
@@ -67,15 +67,12 @@ fn main() {
     if request_path.starts_with("http://") || request_path.starts_with("https://") {
         let url = Url::new(request_path).unwrap();
         load(&url);
-        return;
     } else if request_path.starts_with("file://") {
         let file = File::new(request_path).unwrap();
         load(&file);
-        return;
     } else if request_path.starts_with("data:") {
         let data = Data::new(request_path).unwrap();
         load(&data);
-        return;
     } else if request_path.starts_with("view-source:") {
         let view_source = ViewSource::new(request_path).unwrap();
         load(&view_source);
