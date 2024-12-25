@@ -3,6 +3,7 @@ mod file;
 mod requestable;
 mod url;
 mod viewsource;
+mod socketpool;
 
 use data::Data;
 use file::File;
@@ -10,8 +11,11 @@ use requestable::Requestable;
 use std::env;
 use url::Url;
 use viewsource::ViewSource;
+use socketpool::SocketPool;
 
 fn load(obj: &dyn Requestable) {
+    
+    
     match obj.request() {
         Ok(body) => {
             if obj.scheme() == "view-source" {
@@ -54,6 +58,8 @@ fn decode_entities(body: &str) -> String {
 }
 
 fn main() {
+    let pool = SocketPool::new();
+    
     let args: Vec<String> = env::args().collect();
     if args.len() != 2 {
         eprintln!("Usage: {} <url>", args[0]);
@@ -63,6 +69,7 @@ fn main() {
     let request_path = &args[1];
 
     if request_path.starts_with("http://") || request_path.starts_with("https://") {
+        pool.add(request_path);
         let url = Url::new(request_path).unwrap();
         load(&url);
     } else if request_path.starts_with("file://") {

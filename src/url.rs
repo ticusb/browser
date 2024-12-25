@@ -83,6 +83,10 @@ impl Url {
 
         Ok(response)
     }
+    
+    pub fn address(&self) -> String {
+        format!("{}:{}", self.host, self.port)
+    }
 }
 
 impl Requestable for Url {
