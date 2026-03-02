@@ -1,15 +1,36 @@
 [package]
 name = "browser"
-version = "0.1.0"
+version = "0.3.0"
 edition = "2021"
+authors = ["Your Name"]
+description = "A from-scratch web browser implementation in Rust"
+license = "MIT"
+repository = "https://github.com/yourusername/browser"
 
 [dependencies]
 native-tls = "0.2.8"
+minifb = "0.25"
+fontdue = "0.7"
 
 [[bin]]
 name = "url"
 path = "src/main.rs"
 
+[[bin]]
+name = "browser_gui"
+path = "src/gui.rs"
+
 [lib]
 name = "web_objects"
 path = "src/lib.rs"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+
+[profile.dev]
+opt-level = 0
+
+[dev-dependencies]
+# Add testing dependencies here if needed
